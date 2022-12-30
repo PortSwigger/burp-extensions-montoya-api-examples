@@ -10,22 +10,21 @@ package example.trafficredirector;
 
 import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
-import burp.api.montoya.http.*;
+import burp.api.montoya.http.HttpService;
+import burp.api.montoya.http.handler.*;
 import burp.api.montoya.http.message.requests.HttpRequest;
 
 import static burp.api.montoya.http.HttpService.httpService;
-import static burp.api.montoya.http.RequestResult.requestResult;
-import static burp.api.montoya.http.ResponseResult.responseResult;
+import static burp.api.montoya.http.handler.RequestToSendAction.continueWith;
+import static burp.api.montoya.http.handler.ResponseReceivedAction.continueWith;
 
 //Burp will auto-detect and load any class that extends BurpExtension.
-public class TrafficRedirector implements BurpExtension
-{
+public class TrafficRedirector implements BurpExtension {
     private static final String HOST_FROM = "host1.example.org";
     private static final String HOST_TO = "host2.example.org";
 
     @Override
-    public void initialize(MontoyaApi api)
-    {
+    public void initialize(MontoyaApi api) {
         // set extension name
         api.extension().setName("Traffic redirector");
 
@@ -33,27 +32,23 @@ public class TrafficRedirector implements BurpExtension
         api.http().registerHttpHandler(new MyHttpHandler());
     }
 
-    private static class MyHttpHandler implements HttpHandler
-    {
+    private static class MyHttpHandler implements HttpHandler {
         @Override
-        public RequestResult handleHttpRequest(OutgoingHttpRequest outgoingRequest)
-        {
-            HttpService service = outgoingRequest.httpService();
+        public RequestToSendAction handleHttpRequestToSend(HttpRequestToSend httpRequestToSend) {
+            HttpService service = httpRequestToSend.httpService();
 
-            if (HOST_FROM.equalsIgnoreCase(service.host()))
-            {
-                HttpRequest newRequest = outgoingRequest.withService(httpService(HOST_TO, service.port(), service.secure()));
+            if (HOST_FROM.equalsIgnoreCase(service.host())) {
+                HttpRequest newRequest = httpRequestToSend.withService(httpService(HOST_TO, service.port(), service.secure()));
 
-                return requestResult(newRequest, outgoingRequest.annotations());
+                return continueWith(newRequest);
             }
 
-            return requestResult(outgoingRequest, outgoingRequest.annotations());
+            return continueWith(httpRequestToSend);
         }
 
         @Override
-        public ResponseResult handleHttpResponse(IncomingHttpResponse incomingResponse)
-        {
-            return responseResult(incomingResponse, incomingResponse.annotations());
+        public ResponseReceivedAction handleHttpResponseReceived(HttpResponseReceived httpResponseReceived) {
+            return continueWith(httpResponseReceived);
         }
     }
 }

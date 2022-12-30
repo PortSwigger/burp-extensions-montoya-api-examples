@@ -1,31 +1,25 @@
 package example.proxyhandler;
 
-import burp.api.montoya.proxy.InterceptedHttpResponse;
-import burp.api.montoya.proxy.ProxyHttpResponseHandler;
-import burp.api.montoya.proxy.ResponseFinalInterceptResult;
-import burp.api.montoya.proxy.ResponseInitialInterceptResult;
+import burp.api.montoya.proxy.http.InterceptedResponse;
+import burp.api.montoya.proxy.http.ProxyResponseHandler;
+import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
+import burp.api.montoya.proxy.http.ProxyResponseToSendAction;
 
 import static burp.api.montoya.core.HighlightColor.BLUE;
-import static burp.api.montoya.proxy.ResponseFinalInterceptResult.continueWith;
-import static burp.api.montoya.proxy.ResponseInitialInterceptResult.followUserRules;
 
-class MyProxyHttpResponseHandler implements ProxyHttpResponseHandler
-{
+class MyProxyHttpResponseHandler implements ProxyResponseHandler {
     @Override
-    public ResponseInitialInterceptResult handleReceivedResponse(InterceptedHttpResponse interceptedResponse)
-    {
+    public ProxyResponseReceivedAction handleResponseReceived(InterceptedResponse interceptedResponse) {
         //Highlight all responses that have username in them
-        if (interceptedResponse.bodyToString().contains("username"))
-        {
-            return followUserRules(interceptedResponse, interceptedResponse.annotations().withHighlightColor(BLUE));
+        if (interceptedResponse.bodyToString().contains("username")) {
+            return ProxyResponseReceivedAction.continueWith(interceptedResponse, interceptedResponse.annotations().withHighlightColor(BLUE));
         }
 
-        return followUserRules(interceptedResponse);
+        return ProxyResponseReceivedAction.continueWith(interceptedResponse);
     }
 
     @Override
-    public ResponseFinalInterceptResult handleResponseToReturn(InterceptedHttpResponse interceptedResponse)
-    {
-        return continueWith(interceptedResponse);
+    public ProxyResponseToSendAction handleResponseToSend(InterceptedResponse interceptedResponse) {
+        return ProxyResponseToSendAction.continueWith(interceptedResponse);
     }
 }

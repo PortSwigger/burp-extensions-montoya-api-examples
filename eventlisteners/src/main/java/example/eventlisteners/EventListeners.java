@@ -12,28 +12,22 @@ import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.extension.Extension;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
-import burp.api.montoya.http.*;
+import burp.api.montoya.http.Http;
+import burp.api.montoya.http.handler.*;
 import burp.api.montoya.logging.Logging;
-import burp.api.montoya.proxy.*;
+import burp.api.montoya.proxy.Proxy;
+import burp.api.montoya.proxy.http.*;
 import burp.api.montoya.scanner.Scanner;
 import burp.api.montoya.scanner.audit.AuditIssueHandler;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
 
-import static burp.api.montoya.http.RequestResult.requestResult;
-import static burp.api.montoya.http.ResponseResult.responseResult;
-import static burp.api.montoya.proxy.RequestFinalInterceptResult.continueWith;
-import static burp.api.montoya.proxy.RequestInitialInterceptResult.followUserRules;
-import static burp.api.montoya.proxy.ResponseFinalInterceptResult.continueWith;
-import static burp.api.montoya.proxy.ResponseInitialInterceptResult.followUserRules;
 
 //Burp will auto-detect and load any class that extends BurpExtension.
-public class EventListeners implements BurpExtension
-{
+public class EventListeners implements BurpExtension {
     private Logging logging;
 
     @Override
-    public void initialize(MontoyaApi api)
-    {
+    public void initialize(MontoyaApi api) {
         logging = api.logging();
 
         Http http = api.http();
@@ -58,77 +52,64 @@ public class EventListeners implements BurpExtension
         extension.registerUnloadingHandler(new MyExtensionUnloadHandler());
     }
 
-    private class MyHttpHandler implements HttpHandler
-    {
+    private class MyHttpHandler implements HttpHandler {
         @Override
-        public RequestResult handleHttpRequest(OutgoingHttpRequest outgoingRequest)
-        {
-            logging.logToOutput("HTTP request to " + outgoingRequest.httpService() + " [" + outgoingRequest.toolSource().toolType().toolName() + "]");
+        public RequestToSendAction handleHttpRequestToSend(HttpRequestToSend httpRequestToSend) {
+            logging.logToOutput("HTTP request to " + httpRequestToSend.httpService() + " [" + httpRequestToSend.toolSource().toolType().toolName() + "]");
 
-            return requestResult(outgoingRequest, outgoingRequest.annotations());
+            return RequestToSendAction.continueWith(httpRequestToSend);
         }
 
         @Override
-        public ResponseResult handleHttpResponse(IncomingHttpResponse incomingResponse)
-        {
-            logging.logToOutput("HTTP response from " + incomingResponse.initiatingRequest().httpService() + " [" + incomingResponse.toolSource().toolType().toolName() + "]");
+        public ResponseReceivedAction handleHttpResponseReceived(HttpResponseReceived httpResponseReceived) {
+            logging.logToOutput("HTTP response from " + httpResponseReceived.initiatingRequest().httpService() + " [" + httpResponseReceived.toolSource().toolType().toolName() + "]");
 
-            return responseResult(incomingResponse, incomingResponse.annotations());
+            return ResponseReceivedAction.continueWith(httpResponseReceived);
         }
     }
 
-    private class MyProxyHttpRequestHandler implements ProxyHttpRequestHandler
-    {
+    private class MyProxyHttpRequestHandler implements ProxyRequestHandler {
         @Override
-        public RequestInitialInterceptResult handleReceivedRequest(InterceptedHttpRequest interceptedRequest)
-        {
+        public ProxyRequestReceivedAction handleRequestReceived(InterceptedRequest interceptedRequest) {
             logging.logToOutput("Initial intercepted proxy request to " + interceptedRequest.httpService());
 
-            return followUserRules(interceptedRequest);
+            return ProxyRequestReceivedAction.continueWith(interceptedRequest);
         }
 
         @Override
-        public RequestFinalInterceptResult handleRequestToIssue(InterceptedHttpRequest interceptedRequest)
-        {
+        public ProxyRequestToSendAction handleRequestToSend(InterceptedRequest interceptedRequest) {
             logging.logToOutput("Final intercepted proxy request to " + interceptedRequest.httpService());
 
-            return continueWith(interceptedRequest);
+            return ProxyRequestToSendAction.continueWith(interceptedRequest);
         }
     }
 
-    private class MyProxyHttpResponseHandler implements ProxyHttpResponseHandler
-    {
+    private class MyProxyHttpResponseHandler implements ProxyResponseHandler {
         @Override
-        public ResponseInitialInterceptResult handleReceivedResponse(InterceptedHttpResponse interceptedResponse)
-        {
+        public ProxyResponseReceivedAction handleResponseReceived(InterceptedResponse interceptedResponse) {
             logging.logToOutput("Initial intercepted proxy response from " + interceptedResponse.initiatingRequest().httpService());
 
-            return followUserRules(interceptedResponse);
+            return ProxyResponseReceivedAction.continueWith(interceptedResponse);
         }
 
         @Override
-        public ResponseFinalInterceptResult handleResponseToReturn(InterceptedHttpResponse interceptedResponse)
-        {
+        public ProxyResponseToSendAction handleResponseToSend(InterceptedResponse interceptedResponse) {
             logging.logToOutput("Final intercepted proxy response from " + interceptedResponse.initiatingRequest().httpService());
 
-            return continueWith(interceptedResponse);
+            return ProxyResponseToSendAction.continueWith(interceptedResponse);
         }
     }
 
-    private class MyAuditIssueListenerHandler implements AuditIssueHandler
-    {
+    private class MyAuditIssueListenerHandler implements AuditIssueHandler {
         @Override
-        public void handleNewAuditIssue(AuditIssue auditIssue)
-        {
+        public void handleNewAuditIssue(AuditIssue auditIssue) {
             logging.logToOutput("New scan issue: " + auditIssue.name());
         }
     }
 
-    private class MyExtensionUnloadHandler implements ExtensionUnloadingHandler
-    {
+    private class MyExtensionUnloadHandler implements ExtensionUnloadingHandler {
         @Override
-        public void extensionUnloaded()
-        {
+        public void extensionUnloaded() {
             logging.logToOutput("Extension was unloaded.");
         }
     }
