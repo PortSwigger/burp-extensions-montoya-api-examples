@@ -54,10 +54,10 @@ public class EventListeners implements BurpExtension {
 
     private class MyHttpHandler implements HttpHandler {
         @Override
-        public RequestToSendAction handleHttpRequestToSend(HttpRequestToSend httpRequestToSend) {
-            logging.logToOutput("HTTP request to " + httpRequestToSend.httpService() + " [" + httpRequestToSend.toolSource().toolType().toolName() + "]");
+        public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent httpRequestToBeSent) {
+            logging.logToOutput("HTTP request to " + httpRequestToBeSent.httpService() + " [" + httpRequestToBeSent.toolSource().toolType().toolName() + "]");
 
-            return RequestToSendAction.continueWith(httpRequestToSend);
+            return RequestToBeSentAction.continueWith(httpRequestToBeSent);
         }
 
         @Override
@@ -77,10 +77,10 @@ public class EventListeners implements BurpExtension {
         }
 
         @Override
-        public ProxyRequestToSendAction handleRequestToSend(InterceptedRequest interceptedRequest) {
+        public ProxyRequestToBeSentAction handleRequestToBeSent(InterceptedRequest interceptedRequest) {
             logging.logToOutput("Final intercepted proxy request to " + interceptedRequest.httpService());
 
-            return ProxyRequestToSendAction.continueWith(interceptedRequest);
+            return ProxyRequestToBeSentAction.continueWith(interceptedRequest);
         }
     }
 
@@ -93,10 +93,10 @@ public class EventListeners implements BurpExtension {
         }
 
         @Override
-        public ProxyResponseToSendAction handleResponseToSend(InterceptedResponse interceptedResponse) {
+        public ProxyResponseToBeSentAction handleResponseToBeSent(InterceptedResponse interceptedResponse) {
             logging.logToOutput("Final intercepted proxy response from " + interceptedResponse.initiatingRequest().httpService());
 
-            return ProxyResponseToSendAction.continueWith(interceptedResponse);
+            return ProxyResponseToBeSentAction.continueWith(interceptedResponse);
         }
     }
 

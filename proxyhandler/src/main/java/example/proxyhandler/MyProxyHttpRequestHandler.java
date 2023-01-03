@@ -4,7 +4,7 @@ package example.proxyhandler;
 import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.ProxyRequestHandler;
 import burp.api.montoya.proxy.http.ProxyRequestReceivedAction;
-import burp.api.montoya.proxy.http.ProxyRequestToSendAction;
+import burp.api.montoya.proxy.http.ProxyRequestToBeSentAction;
 
 import static burp.api.montoya.core.HighlightColor.RED;
 import static burp.api.montoya.http.message.ContentType.JSON;
@@ -32,9 +32,9 @@ class MyProxyHttpRequestHandler implements ProxyRequestHandler {
     }
 
     @Override
-    public ProxyRequestToSendAction handleRequestToSend(InterceptedRequest interceptedRequest) {
+    public ProxyRequestToBeSentAction handleRequestToBeSent(InterceptedRequest interceptedRequest) {
         //Do nothing with the user modified request, continue as normal.
-        return ProxyRequestToSendAction.continueWith(interceptedRequest);
+        return ProxyRequestToBeSentAction.continueWith(interceptedRequest);
     }
 }
 

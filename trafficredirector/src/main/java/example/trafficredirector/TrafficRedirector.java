@@ -15,7 +15,7 @@ import burp.api.montoya.http.handler.*;
 import burp.api.montoya.http.message.requests.HttpRequest;
 
 import static burp.api.montoya.http.HttpService.httpService;
-import static burp.api.montoya.http.handler.RequestToSendAction.continueWith;
+import static burp.api.montoya.http.handler.RequestToBeSentAction.continueWith;
 import static burp.api.montoya.http.handler.ResponseReceivedAction.continueWith;
 
 //Burp will auto-detect and load any class that extends BurpExtension.
@@ -34,16 +34,16 @@ public class TrafficRedirector implements BurpExtension {
 
     private static class MyHttpHandler implements HttpHandler {
         @Override
-        public RequestToSendAction handleHttpRequestToSend(HttpRequestToSend httpRequestToSend) {
-            HttpService service = httpRequestToSend.httpService();
+        public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent httpRequestToBeSent) {
+            HttpService service = httpRequestToBeSent.httpService();
 
             if (HOST_FROM.equalsIgnoreCase(service.host())) {
-                HttpRequest newRequest = httpRequestToSend.withService(httpService(HOST_TO, service.port(), service.secure()));
+                HttpRequest newRequest = httpRequestToBeSent.withService(httpService(HOST_TO, service.port(), service.secure()));
 
                 return continueWith(newRequest);
             }
 
-            return continueWith(httpRequestToSend);
+            return continueWith(httpRequestToBeSent);
         }
 
         @Override
