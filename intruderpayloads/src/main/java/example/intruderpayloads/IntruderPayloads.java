@@ -6,17 +6,19 @@
  * license terms for those products.
  */
 
-package example.httphandler;
+package example.intruderpayloads;
 
 import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 
-
-//Burp will auto-detect and load any class that extends BurpExtension.
-public class HttpHandlerExample implements BurpExtension {
+public class IntruderPayloads implements BurpExtension
+{
     @Override
-    public void initialize(MontoyaApi api) {
-        //Register our http handler with Burp.
-        api.http().registerHttpHandler(new MyHttpHandler(api));
+    public void initialize(MontoyaApi api)
+    {
+        api.extension().setName("Intruder payloads");
+
+        api.intruder().registerPayloadGeneratorProvider(new MyPayloadGeneratorProvider());
+        api.intruder().registerPayloadProcessor(new MyPayloadProcessor(api));
     }
 }

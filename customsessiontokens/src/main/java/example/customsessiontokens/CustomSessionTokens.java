@@ -6,22 +6,21 @@
  * license terms for those products.
  */
 
-package example.trafficredirector;
+package example.customsessiontokens;
 
 import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 
 //Burp will auto-detect and load any class that extends BurpExtension.
-public class TrafficRedirector implements BurpExtension {
-    static final String HOST_FROM = "host1.example.org";
-    static final String HOST_TO = "host2.example.org";
+public class CustomSessionTokens implements BurpExtension
+{
+    static final String SESSION_ID_KEY = "X-Custom-Session-Id:";
 
     @Override
-    public void initialize(MontoyaApi api) {
-        // set extension name
-        api.extension().setName("Traffic redirector");
+    public void initialize(MontoyaApi api)
+    {
+        api.extension().setName("Session token example");
 
-        // register a new HTTP handler
-        api.http().registerHttpHandler(new MyHttpHandler());
+        api.http().registerSessionHandlingAction(new MySessionHandlingAction());
     }
 }

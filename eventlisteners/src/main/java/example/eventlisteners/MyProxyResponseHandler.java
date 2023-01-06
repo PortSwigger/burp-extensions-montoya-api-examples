@@ -6,28 +6,36 @@
  * license terms for those products.
  */
 
-package example.proxyhandler;
+package example.eventlisteners;
 
+import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.logging.Logging;
 import burp.api.montoya.proxy.http.InterceptedResponse;
 import burp.api.montoya.proxy.http.ProxyResponseHandler;
 import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
 import burp.api.montoya.proxy.http.ProxyResponseToBeSentAction;
 
-import static burp.api.montoya.core.HighlightColor.BLUE;
+public class MyProxyResponseHandler implements ProxyResponseHandler
+{
+    private final Logging logging;
 
-class MyProxyHttpResponseHandler implements ProxyResponseHandler {
+    public MyProxyResponseHandler(MontoyaApi api)
+    {
+        logging = api.logging();
+    }
+
     @Override
     public ProxyResponseReceivedAction handleResponseReceived(InterceptedResponse interceptedResponse) {
-        //Highlight all responses that have username in them
-        if (interceptedResponse.bodyToString().contains("username")) {
-            return ProxyResponseReceivedAction.continueWith(interceptedResponse, interceptedResponse.annotations().withHighlightColor(BLUE));
-        }
+        logging.logToOutput("Initial intercepted proxy response from " + interceptedResponse.initiatingRequest().httpService());
 
         return ProxyResponseReceivedAction.continueWith(interceptedResponse);
     }
 
     @Override
     public ProxyResponseToBeSentAction handleResponseToBeSent(InterceptedResponse interceptedResponse) {
+        logging.logToOutput("Final intercepted proxy response from " + interceptedResponse.initiatingRequest().httpService());
+
         return ProxyResponseToBeSentAction.continueWith(interceptedResponse);
     }
+
 }

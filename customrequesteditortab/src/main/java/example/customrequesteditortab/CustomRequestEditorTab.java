@@ -6,17 +6,18 @@
  * license terms for those products.
  */
 
-package example.httphandler;
+package example.customrequesteditortab;
 
 import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 
-
-//Burp will auto-detect and load any class that extends BurpExtension.
-public class HttpHandlerExample implements BurpExtension {
+public class CustomRequestEditorTab implements BurpExtension
+{
     @Override
-    public void initialize(MontoyaApi api) {
-        //Register our http handler with Burp.
-        api.http().registerHttpHandler(new MyHttpHandler(api));
+    public void initialize(MontoyaApi api)
+    {
+        api.extension().setName("Serialized input editor");
+
+        api.userInterface().registerHttpRequestEditorProvider(new MyHttpRequestEditorProvider(api));
     }
 }
