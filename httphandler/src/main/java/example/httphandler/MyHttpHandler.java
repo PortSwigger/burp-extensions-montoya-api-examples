@@ -31,9 +31,9 @@ class MyHttpHandler implements HttpHandler {
     public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent requestToBeSent) {
         Annotations annotations = requestToBeSent.annotations();
 
-        // If the request is a post, log the body and add a comment annotation.
+        // If the request is a post, log the body and add notes.
         if (isPost(requestToBeSent)) {
-            annotations = annotations.withComment("Request was a post");
+            annotations = annotations.withNotes("Request was a post");
             logging.logToOutput(requestToBeSent.bodyToString());
         }
 

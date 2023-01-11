@@ -25,7 +25,7 @@ import java.net.URL;
 public class MultiApiExample implements BurpExtension, IBurpExtender
 {
     private MontoyaApi montoyaApi;
-    private IBurpExtenderCallbacks oldApi;
+    private IBurpExtenderCallbacks wienerApi;
 
     //Invoked Last
     @Override
@@ -36,11 +36,11 @@ public class MultiApiExample implements BurpExtension, IBurpExtender
         //Register a suite tab that has a button that uses both api's
         api.userInterface().registerSuiteTab("My Suite Tab", new MySuiteTab());
 
-        api.extension().setName("Montoya Name"); //Replaces name set by old Api.
+        api.extension().setName("Montoya Name"); //Replaces name set by Wiener Api.
 
-        if (api.scope().isInScope("http://test.url")) //Is true because old API added it to scope.
+        if (api.scope().isInScope("http://test.url")) //Is true because Wiener API added it to scope.
         {
-            oldApi.issueAlert("test.url is in scope"); //OLD api has been set, so we can use it.
+            wienerApi.issueAlert("test.url is in scope"); //Wiener api has been set, so we can use it.
         }
         else
         {
@@ -52,9 +52,9 @@ public class MultiApiExample implements BurpExtension, IBurpExtender
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks)
     {
-        this.oldApi = callbacks;
+        this.wienerApi = callbacks;
 
-        callbacks.setExtensionName("Old Name"); //Will be replaced by Montoya version.
+        callbacks.setExtensionName("Wiener Name"); //Will be replaced by Montoya version.
 
         try
         {
@@ -80,7 +80,7 @@ public class MultiApiExample implements BurpExtension, IBurpExtender
             JButton button = new JButton("Print filename to log file");
             button.addActionListener(e -> {
                 montoyaApi.logging().logToOutput("Montoya API used to log:" + montoyaApi.extension().filename());
-                oldApi.printOutput("Old API used to log:" + oldApi.getExtensionFilename());
+                wienerApi.printOutput("Wiener API used to log:" + wienerApi.getExtensionFilename());
             });
 
             customTabContent.add(button);

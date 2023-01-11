@@ -14,4 +14,4 @@ This extension works as follows:
     - Registers an extension name, which overwrites the `registerExtenderCallbacks()` name
     - Checks whether `http://test.url` is in scope, and writes an alert to the Dashboard
 - The new Suite tab contains a button
-    - When the button is used, the filename according to both the old API and Montoya API are printed to the output
+    - When the button is used, the filename according to both the Wiener API and Montoya API are printed to the output
