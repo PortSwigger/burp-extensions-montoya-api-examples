@@ -64,7 +64,7 @@ public class MySessionHandlingAction implements SessionHandlingAction
         for(HttpHeader header : headers)
         {
             // Skip any header that isn't an "X-Custom-Session-Id"
-            if (!header.name().startsWith(CustomSessionTokens.SESSION_ID_KEY))
+            if (!header.name().equals("X-Custom-Session-Id"))
             {
                 continue;
             }

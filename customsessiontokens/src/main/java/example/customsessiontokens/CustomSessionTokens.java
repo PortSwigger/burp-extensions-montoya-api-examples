@@ -14,8 +14,6 @@ import burp.api.montoya.MontoyaApi;
 //Burp will auto-detect and load any class that extends BurpExtension.
 public class CustomSessionTokens implements BurpExtension
 {
-    static final String SESSION_ID_KEY = "X-Custom-Session-Id:";
-
     @Override
     public void initialize(MontoyaApi api)
     {
