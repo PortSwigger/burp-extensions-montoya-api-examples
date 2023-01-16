@@ -39,7 +39,7 @@ public class EventListeners implements BurpExtension {
         // register a new HTTP handler
         http.registerHttpHandler(new MyHttpHandler(api));
 
-        // register a new Proxy handler
+        // register new Proxy handlers
         proxy.registerRequestHandler(new MyProxyRequestHandler(api));
         proxy.registerResponseHandler(new MyProxyResponseHandler(api));
 

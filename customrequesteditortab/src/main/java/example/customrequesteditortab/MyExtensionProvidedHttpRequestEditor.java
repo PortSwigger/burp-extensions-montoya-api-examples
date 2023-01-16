@@ -66,12 +66,10 @@ class MyExtensionProvidedHttpRequestEditor implements ExtensionProvidedHttpReque
             String encodedData = urlUtils.encode(base64Encoded);
 
             request = requestResponse.request().withUpdatedParameters(HttpParameter.parameter(parsedHttpParameter.name(), encodedData, parsedHttpParameter.type()));
-            api.logging().logToOutput("returning reserialized stuff");
         }
         else
         {
             request = requestResponse.request();
-            api.logging().logToOutput("returning regular stuff");
         }
 
         return request;
