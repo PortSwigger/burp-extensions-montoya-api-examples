@@ -47,7 +47,7 @@ class MyScanCheck implements ScanCheck
     @Override
     public AuditResult activeAudit(HttpRequestResponse baseRequestResponse, AuditInsertionPoint auditInsertionPoint)
     {
-        HttpRequest checkRequest = auditInsertionPoint.buildHttpRequestWithPayload(byteArray(INJ_TEST));
+        HttpRequest checkRequest = auditInsertionPoint.buildHttpRequestWithPayload(byteArray(INJ_TEST)).withService(baseRequestResponse.httpService());
 
         HttpRequestResponse checkRequestResponse = api.http().sendRequest(checkRequest);
 
