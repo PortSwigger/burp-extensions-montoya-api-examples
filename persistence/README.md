@@ -11,5 +11,5 @@ The extension works as follows:
 - It saves and loads extension built http requests
   - Sends the  requests to repeater with an incrementing tab counter when Burp is restarted or the extension is reloaded.
 - It saves the last 5 requests/responses issued by Burp
-  - Prints the last 5 request/respones to the output log when burp is restarted or the extension is reloaded. 
+  - Prints the last 5 request/responses to the output log when burp is restarted or the extension is reloaded. 
   - Uses Persisted Lists to automatically save/load data stored in the list.

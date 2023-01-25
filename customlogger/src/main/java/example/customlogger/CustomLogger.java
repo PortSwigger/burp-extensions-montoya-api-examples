@@ -11,6 +11,7 @@ package example.customlogger;
 import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.handler.HttpResponseReceived;
+import burp.api.montoya.ui.UserInterface;
 import burp.api.montoya.ui.editor.HttpRequestEditor;
 import burp.api.montoya.ui.editor.HttpResponseEditor;
 
@@ -41,10 +42,15 @@ public class CustomLogger implements BurpExtension
 
         // tabs with request/response viewers
         JTabbedPane tabs = new JTabbedPane();
-        HttpRequestEditor requestViewer = api.userInterface().createHttpRequestEditor(READ_ONLY);
-        HttpResponseEditor responseViewer = api.userInterface().createHttpResponseEditor(READ_ONLY);
+
+        UserInterface userInterface = api.userInterface();
+
+        HttpRequestEditor requestViewer = userInterface.createHttpRequestEditor(READ_ONLY);
+        HttpResponseEditor responseViewer = userInterface.createHttpResponseEditor(READ_ONLY);
+
         tabs.addTab("Request", requestViewer.uiComponent());
         tabs.addTab("Response", responseViewer.uiComponent());
+
         splitPane.setRightComponent(tabs);
 
         // table of log entries
@@ -63,8 +69,8 @@ public class CustomLogger implements BurpExtension
         };
 
         JScrollPane scrollPane = new JScrollPane(table);
-        splitPane.setLeftComponent(scrollPane);
 
+        splitPane.setLeftComponent(scrollPane);
 
         return splitPane;
     }
