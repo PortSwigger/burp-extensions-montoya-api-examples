@@ -22,9 +22,10 @@ public class MyHttpHandler implements HttpHandler
         HttpService service = httpRequestToBeSent.httpService();
 
         if (TrafficRedirector.HOST_FROM.equalsIgnoreCase(service.host())) {
-            HttpRequest newRequest = httpRequestToBeSent.withService(httpService(TrafficRedirector.HOST_TO, service.port(), service.secure()));
+            HttpRequest updatedHttpServiceRequest = httpRequestToBeSent.withService(httpService(TrafficRedirector.HOST_TO, service.port(), service.secure()));
+            HttpRequest updatedHostHeaderRequest = updatedHttpServiceRequest.withUpdatedHeader("Host", TrafficRedirector.HOST_TO);
 
-            return continueWith(newRequest);
+            return continueWith(updatedHostHeaderRequest);
         }
 
         return continueWith(httpRequestToBeSent);

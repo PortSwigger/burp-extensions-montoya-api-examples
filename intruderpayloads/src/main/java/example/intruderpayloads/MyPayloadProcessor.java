@@ -9,13 +9,13 @@
 package example.intruderpayloads;
 
 import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.intruder.PayloadData;
 import burp.api.montoya.intruder.PayloadProcessingResult;
 import burp.api.montoya.intruder.PayloadProcessor;
 import burp.api.montoya.utilities.Base64Utils;
 import burp.api.montoya.utilities.URLUtils;
 
-import static burp.api.montoya.core.ByteArray.byteArray;
 import static burp.api.montoya.intruder.PayloadProcessingResult.usePayload;
 
 public class MyPayloadProcessor implements PayloadProcessor
@@ -41,7 +41,7 @@ public class MyPayloadProcessor implements PayloadProcessor
         URLUtils urlUtils = api.utilities().urlUtils();
 
         // Decode the base value
-        String dataParameter = base64Utils.decode(urlUtils.decode(payloadData.originalPayload())).toString();
+        String dataParameter = base64Utils.decode(urlUtils.decode(payloadData.insertionPoint().baseValue())).toString();
 
         // Parse the location of the input string in the decoded data
         String prefix = findPrefix(dataParameter);
@@ -54,8 +54,9 @@ public class MyPayloadProcessor implements PayloadProcessor
 
         // Rebuild serialized data with the new payload
         String rebuiltDataParameter = prefix + payloadData.currentPayload() + suffix;
+        ByteArray reserializedDataParameter = urlUtils.encode(base64Utils.encode(rebuiltDataParameter));
 
-        return usePayload(byteArray(rebuiltDataParameter));
+        return usePayload(reserializedDataParameter);
     }
 
     private String findPrefix(String dataParameter)
