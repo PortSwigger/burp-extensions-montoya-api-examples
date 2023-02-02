@@ -13,8 +13,8 @@ import burp.api.montoya.MontoyaApi;
 
 //Burp will auto-detect and load any class that extends BurpExtension.
 public class TrafficRedirector implements BurpExtension {
-    static final String HOST_FROM = "portswigger-labs.net";
-    static final String HOST_TO = "ginandjuice.shop";
+    static final String HOST_FROM = "host1.example.org";
+    static final String HOST_TO = "host2.example.org";
 
     @Override
     public void initialize(MontoyaApi api) {
