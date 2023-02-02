@@ -17,6 +17,8 @@ public class ProxyHandlerExample implements BurpExtension
     @Override
     public void initialize(MontoyaApi api)
     {
+        api.extension().setName("Proxy Handler Example");
+
         //Register proxy handlers with Burp.
         api.proxy().registerRequestHandler(new MyProxyHttpRequestHandler());
         api.proxy().registerResponseHandler(new MyProxyHttpResponseHandler());
