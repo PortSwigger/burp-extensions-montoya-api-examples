@@ -12,5 +12,9 @@ include 'customsessiontokens'
 include 'intruderpayloads'
 include 'customlogger'
 include 'persistence'
+include 'menubar'
+
 include 'proxywebsockethandler'
 include 'websockethandler'
+include 'contextmenu'
+
