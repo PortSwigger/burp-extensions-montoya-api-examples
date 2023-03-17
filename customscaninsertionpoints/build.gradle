@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'net.portswigger.burp.extensions:montoya-api:+'
+    compileOnly 'net.portswigger.burp.extensions:montoya-api:2023.1'
 }
 
 jar {
