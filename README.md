@@ -19,3 +19,4 @@ Example Extensions
 | [WebSocket Handlers](https://github.com/PortSwigger/burp-extensions-montoya-api-examples/blob/main/websockethandler)                    | Demonstrates performing various actions on web socket messages passing through any tool in Burp |
 | [Proxy WebSocket Handlers](https://github.com/PortSwigger/burp-extensions-montoya-api-examples/blob/main/proxywebsockethandler)         | Demonstrates performing various actions on web socket messages passing through the Proxy        |
 | [Menu Bar](https://github.com/PortSwigger/burp-extensions-montoya-api-examples/blob/main/menubar)                                       | Registers a top level menu bar with actions                                                     |
+| [Context Menu](https://github.com/PortSwigger/burp-extensions-montoya-api-examples/blob/main/contextmenu)                               | Registers new context menu items to print requests and responses                                |
