@@ -17,4 +17,5 @@ include 'menubar'
 include 'proxywebsockethandler'
 include 'websockethandler'
 include 'contextmenu'
+include 'collaborator'
 
