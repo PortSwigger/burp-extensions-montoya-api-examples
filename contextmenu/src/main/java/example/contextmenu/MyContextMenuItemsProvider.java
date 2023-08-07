@@ -23,15 +23,10 @@ public class MyContextMenuItemsProvider implements ContextMenuItemsProvider
 {
 
     private final MontoyaApi api;
-    private final JMenuItem retrieveRequestItem;
-    private final JMenuItem retrieveResponseItem;
 
     public MyContextMenuItemsProvider(MontoyaApi api)
     {
         this.api = api;
-
-        retrieveRequestItem = new JMenuItem("Print request");
-        retrieveResponseItem = new JMenuItem("Print response");
     }
 
     @Override
@@ -40,6 +35,9 @@ public class MyContextMenuItemsProvider implements ContextMenuItemsProvider
         if (event.isFromTool(ToolType.PROXY, ToolType.TARGET, ToolType.LOGGER))
         {
             List<Component> menuItemList = new ArrayList<>();
+
+            JMenuItem retrieveRequestItem = new JMenuItem("Print request");
+            JMenuItem retrieveResponseItem = new JMenuItem("Print response");
 
             HttpRequestResponse requestResponse = event.messageEditorRequestResponse().isPresent() ? event.messageEditorRequestResponse().get().requestResponse() : event.selectedRequestResponses().get(0);
 
