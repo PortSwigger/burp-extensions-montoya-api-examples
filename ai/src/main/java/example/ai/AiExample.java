@@ -13,6 +13,8 @@ import burp.api.montoya.EnhancedCapability;
 import burp.api.montoya.MontoyaApi;
 
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static burp.api.montoya.EnhancedCapability.AI_FEATURES;
 
@@ -29,9 +31,12 @@ public class AiExample implements BurpExtension
     {
         api.extension().setName("AI extension");
 
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
         MyPromptMessage promptMessageHandler = new MyPromptMessage(SYSTEM_MESSAGE);
 
-        api.proxy().registerRequestHandler(new MyProxyRequestHandler(api.ai(), api.logging(), promptMessageHandler));
+        api.proxy().registerRequestHandler(new MyProxyRequestHandler(api.ai(), api.logging(), executorService, promptMessageHandler));
+
+        api.extension().registerUnloadingHandler(executorService::shutdownNow);
     }
 
     @Override

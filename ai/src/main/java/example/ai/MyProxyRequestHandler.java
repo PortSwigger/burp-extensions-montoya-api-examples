@@ -18,7 +18,6 @@ import burp.api.montoya.proxy.http.ProxyRequestReceivedAction;
 import burp.api.montoya.proxy.http.ProxyRequestToBeSentAction;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static burp.api.montoya.core.HighlightColor.GREEN;
 import static java.util.Locale.US;
@@ -30,12 +29,12 @@ class MyProxyRequestHandler implements ProxyRequestHandler
     private final MyPromptMessage promptMessageHandler;
     private final ExecutorService executorService;
 
-    public MyProxyRequestHandler(Ai ai, Logging logging, MyPromptMessage promptMessageHandler)
+    public MyProxyRequestHandler(Ai ai, Logging logging, ExecutorService executorService, MyPromptMessage promptMessageHandler)
     {
         this.ai = ai;
         this.logging = logging;
         this.promptMessageHandler = promptMessageHandler;
-        this.executorService = Executors.newFixedThreadPool(5);
+        this.executorService = executorService;
     }
 
     @Override
