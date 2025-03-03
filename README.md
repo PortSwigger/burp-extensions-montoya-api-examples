@@ -21,3 +21,4 @@ Example Extensions
 | [Menu Bar](https://github.com/PortSwigger/burp-extensions-montoya-api-examples/blob/main/menubar)                                       | Registers a top level menu bar with actions                                                     |
 | [Context Menu](https://github.com/PortSwigger/burp-extensions-montoya-api-examples/blob/main/contextmenu)                               | Registers new context menu items to print requests and responses                                |
 | [Collaborator](https://github.com/PortSwigger/burp-extensions-montoya-api-examples/blob/main/collaborator)                              | Demonstrates using Collaborator and Persistence functionality                                   |
+| [Extension Template Project](https://github.com/PortSwigger/burp-extensions-montoya-api-examples/blob/main/extensiontemplateproject)    | A ready-to-use extension template to help you start writing your extension immediately          |
