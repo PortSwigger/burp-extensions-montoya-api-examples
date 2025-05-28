@@ -36,6 +36,13 @@ public class HelloWorld implements BurpExtension
         logging.raiseCriticalEvent("Hello critical event.");
 
         // throw an exception that will appear in our error stream
-        throw new RuntimeException("Hello exception.");
+        try
+        {
+            throw new RuntimeException("Hello exception.");
+        }
+        catch (RuntimeException e)
+        {
+            logging.logToError("Hello thrown exception.", e);
+        }
     }
 }
