@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. PortSwigger Ltd. All rights reserved.
+ * Copyright (c) 2023-2025. PortSwigger Ltd. All rights reserved.
  *
  * This code may be used to extend the functionality of Burp Suite Community Edition
  * and Burp Suite Professional, provided that this usage does not violate the
@@ -10,6 +10,7 @@ package example.customscanchecks;
 
 import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.scanner.scancheck.ScanCheckType;
 
 public class CustomScanChecks implements BurpExtension
 {
@@ -18,6 +19,8 @@ public class CustomScanChecks implements BurpExtension
     {
         api.extension().setName("Custom Scanner checks");
 
-        api.scanner().registerScanCheck(new MyScanCheck(api));
+        api.scanner().registerPassiveScanCheck(new MyPassiveScanCheck(), ScanCheckType.PER_REQUEST);
+
+        api.scanner().registerActiveScanCheck(new MyActiveScanCheck(), ScanCheckType.PER_INSERTION_POINT);
     }
 }

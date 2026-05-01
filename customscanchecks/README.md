@@ -6,8 +6,8 @@ Custom Scan Checks Example Extension
 ---
 
 The sample extension demonstrates the following techniques:
-- Registering a custom scan check
-- Performing passive and active scanning when initiated by the user
+- Registering a passive scan check
+- Registering an active scan check
 - Using the Burp-provided `AuditInsertionPoint` to construct requests for active scanning using specified payloads
 - Using a helper method to search responses for relevant match strings
 - Providing an `MarkedHttpRequestResponse` to highlight relevant portions of requests and responses, 
